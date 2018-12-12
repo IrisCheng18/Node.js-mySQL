@@ -1,0 +1,23 @@
+{
+  "name": "node.js-mysql",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/IrisCheng18/Node.js-mySQL.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/IrisCheng18/Node.js-mySQL/issues"
+  },
+  "homepage": "https://github.com/IrisCheng18/Node.js-mySQL#readme",
+  "dependencies": {
+    "inquirer": "^6.2.1",
+    "mysql": "^2.16.0"
+  }
+}
