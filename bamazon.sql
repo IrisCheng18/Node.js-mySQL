@@ -26,3 +26,4 @@ VALUES
 
 SELECT * FROM products;
 UPDATE products SET stock_quantity = 1 WHERE item_id = 10;
+SELECT item_id AS "Item IDs", product_name AS Name, price AS Price, stock_quantity AS Quantities From products;
