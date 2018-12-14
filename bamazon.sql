@@ -6,7 +6,7 @@ CREATE TABLE products (
 	item_id INT NOT NULL AUTO_INCREMENT,
     product_name VARCHAR(100),
     department_name VARCHAR(100),
-    price INTEGER(10.2),
+    price DECIMAL(10, 2),
     stock_quantity INTEGER(10),
     PRIMARY KEY (item_id)
 );
@@ -24,4 +24,5 @@ VALUES
 ("Kindle E-reader", "Electronics", 79.99, 40),
 ("Golf Tee", "Sports", 2.99, 100);
 
-SELECT * FROM products
+SELECT * FROM products;
+UPDATE products SET stock_quantity = 1 WHERE item_id = 10;
