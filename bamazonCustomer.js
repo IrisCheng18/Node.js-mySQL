@@ -88,7 +88,8 @@ function updateProducts(productID, units) {
 function readProducts(productID, units) {
     connection.query('SELECT item_id AS "Item ID", product_name AS Name, department_name AS Department, price AS Price, stock_quantity AS Quantity From products', function (error, results) {
         if (error) throw error;
-        console.log(chalk.green('\nSuccessfully purchased ' + units + ' ' + products[productID - 1].product_name + ' at the total price of $' + units * products[productID].price + '.\n'));
+
+        console.log(chalk.green('\nSuccessfully purchased ' + units + ' ' + products[productID - 1].Name + ' at the total price of $' + units * products[productID - 1].Price + '.\n'));
         console.table(results);
 
         products = results;

@@ -25,5 +25,7 @@ VALUES
 ("Golf Tee", "Sports", 2.99, 100);
 
 SELECT * FROM products;
-UPDATE products SET stock_quantity = 1 WHERE item_id = 10;
+UPDATE products SET stock_quantity = stock_quantity + 1  WHERE product_name = 'Milk' AND item_id <> 0;
 SELECT item_id AS "Item IDs", product_name AS Name, price AS Price, stock_quantity AS Quantities From products;
+SELECT item_id AS "Item IDs", product_name AS Name, price AS Price, stock_quantity AS Quantities From products WHERE stock_quantity < 5;
+INSERT INTO products(product_name, department_name, price, stock_quantity) VALUES ('Apple', 'Grocery', 1.99, 20);
