@@ -55,7 +55,7 @@ function chooseMenuOptions() {
 };
 
 function viewProducts() {
-    connection.query('SELECT item_id AS "Item IDs", product_name AS Name, department_name AS Department, price AS Price, stock_quantity AS Quantities From products', function (error, results) {
+    connection.query('SELECT item_id AS "Item IDs", product_name AS Name, department_name AS Department, price AS Price, stock_quantity AS Quantities, product_sales AS "Product Sales" From products', function (error, results) {
         if (error) throw error;
 
         console.table(results);
@@ -97,17 +97,20 @@ function updateInventory() {
                     name: 'quantity'
                 }
             ]).then(function (quantityResponse) {
-                connection.query('SELECT stock_quantity FROM products WHERE ? AND item_id <> 0', [
+                connection.query('SELECT price, stock_quantity FROM products WHERE ? AND item_id <> 0', [
                     {
                         product_name: choiceResponse.choice
                     }
                 ], function (err, res) {
                     if (err) throw err;
 
-                    connection.query('UPDATE products SET ? WHERE ? AND item_id <> 0', [
+                    connection.query('UPDATE products SET ?, ? WHERE ? AND item_id <> 0', [
                         {
-                            stock_quantity: res[0].stock_quantity + parseInt(quantityResponse.quantity)
+                            stock_quantity: res[0].stock_quantity + parseInt(quantityResponse.quantity),
                         },
+                        {
+                            product_sales: res[0].price * (res[0].stock_quantity + parseInt(quantityResponse.quantity))
+                        },  
                         {
                             product_name: choiceResponse.choice
                         }
@@ -146,11 +149,12 @@ function addNewProduct() {
             name: "quantity"
         }
     ]).then(function(response) {
-        connection.query(`INSERT INTO products(product_name, department_name, price, stock_quantity) VALUES (?, ?, ?, ?);`, [
+        connection.query(`INSERT INTO products(product_name, department_name, price, stock_quantity, product_sales) VALUES (?, ?, ?, ?, ?);`, [
             response.productName, 
             response.department, 
             response.price, 
-            response.quantity
+            response.quantity,
+            response.price * response.quantity
         ], function(err, results) {
             if (err) throw err;
 
