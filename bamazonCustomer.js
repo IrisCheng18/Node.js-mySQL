@@ -15,7 +15,7 @@ var connection = mysql.createConnection({
 connection.connect(function (err) {
     if (err) throw err;
 
-    connection.query('SELECT item_id AS "Item ID", product_name AS Name, department_name AS Department, price AS Price, stock_quantity AS Quantity From products', function (error, results) {
+    connection.query('SELECT item_id AS "Item ID", product_name AS Name, department_name AS Department, price AS Price, stock_quantity AS Quantity, product_sales as "Product Sales" From products', function (error, results) {
         if (error) throw error;
 
         console.table(results);
@@ -73,7 +73,8 @@ function inputUnits(productID) {
 function updateProducts(productID, units) {
     connection.query('UPDATE products SET ? WHERE ?', [
         {
-            stock_quantity: products[productID - 1].Quantity - units
+            stock_quantity: products[productID - 1].Quantity - units,
+            product_sales: products[productID - 1]["Product Sales"] - products[productID - 1].Price * units
         },
         {
             item_id: productID
@@ -86,7 +87,7 @@ function updateProducts(productID, units) {
 };
 
 function readProducts(productID, units) {
-    connection.query('SELECT item_id AS "Item ID", product_name AS Name, department_name AS Department, price AS Price, stock_quantity AS Quantity From products', function (error, results) {
+    connection.query('SELECT item_id AS "Item ID", product_name AS Name, department_name AS Department, price AS Price, stock_quantity AS Quantity, product_sales as "Product Sales" From products', function (error, results) {
         if (error) throw error;
 
         console.log(chalk.green('\nSuccessfully purchased ' + units + ' ' + products[productID - 1].Name + ' at the total price of $' + units * products[productID - 1].Price + '.\n'));
