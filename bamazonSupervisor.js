@@ -32,15 +32,48 @@ function chooseMenuOptions() {
     ]).then(function (response) {
         switch (response.choice) {
             case 'View Product Sales by Department':
-                viewProducts();
+                viewProductSalesByDepartment();
                 break;
             case 'Create New Department':
-                viewLowInventory();
+                addNewDepartment();
                 break;
             default:
                 connection.end();
         };
 
 
+    });
+};
+
+function viewProductSalesByDepartment() {
+    connection.query('SELECT departments.department_name AS Department, ANY_VALUE(departments.over_head_costs) AS "Overhead Costs", ANY_VALUE(SUM(products.product_sales)) AS "Product Sales", ANY_VALUE(SUM(products.product_sales) - departments.over_head_costs) AS "Total Profit" FROM departments INNER JOIN products ON departments.department_name = products.department_name GROUP BY departments.department_name', function (error, results) {
+        if (error) throw error;
+
+        console.table(results);
+        chooseMenuOptions();
+    });
+};
+
+function addNewDepartment() {
+    inquirer.prompt([
+        {
+            type: "input",
+            message: "Department Name: ",
+            name: "department"
+        },
+        {
+            type: "input",
+            message: "Overhead Costs: ",
+            name: "overhead"
+        },
+    ]).then(function (response) {
+        connection.query(`INSERT INTO departments(department_name, over_head_costs) VALUES (?, ?);`, [
+            response.department,
+            response.overhead
+        ], function (err, results) {
+            if (err) throw err;
+
+            viewProductSalesByDepartment();
+        });
     });
 };
